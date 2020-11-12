@@ -1,0 +1,6 @@
+aux_docs/
+.vscode/
+secrets.py
+notes.txt
+venv/
+__pycache__
