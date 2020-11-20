@@ -5,22 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotryst</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,300;1,400;1,600&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
-
 </head>
+
 <body>
 
 <div class="container text-center">
-    <h1 class="display-1 mb-5">Spotryst</h1>
+    <h1 class="display-1 mb-0 title"><a href="/">Spotryst</a></h1>
+    <p class="display-5 mb-5 font-weight-bold subtitle">A SPOTIFY CONCIERGE</p>
 
-    <div id="results"></div>
+    <div id="login" class="hidden">
+      <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&scope=playlist-modify-public+playlist-modify-private+user-follow-modify">
+        <button id="button-login" class="btn btn-success btn-lg p-4">
+          Login to Spotify
+        </button>
+      </a>
+    </div>
 
-    <form id="search-form" method="POST" action="/search">
+
+    <h3 id="instructions-display" class="display-5 mb-4 hidden"></h3>
+
+    <div id="searchtype-buttons" class="hidden">
+      <button id="button-artist" class="btn btn-success btn-lg mr-2 p-4" type="button">Start with an artist</button>
+      <button id="button-track" class="btn btn-success btn-lg ml-2 p-4" type="button">Start with a track</button>
+    </div>
+
+    <div id="nav-directions" class="hidden mt-4">
+      <p>Click on the Spotryst logo at any point to start over</p>
+    </div>
+
+    <div id="results" class="hidden"></div>
+
+    <form id="search-form" class="hidden" method="POST" action="/search">
         {{ search_form.hidden_tag() }}
     
         {% for field in search_form if field.widget.input_type != 'hidden' %}
           <p>
-            {{ field.label }}
+            <!-- {{ field.label }} -->
             {{ field }}
       
             {% for err in field.errors %}
@@ -29,12 +55,10 @@
           </p>
         {% endfor %}
     
-        <button class="btn btn-success" id="search-submit" type="submit">Submit</button>
+        <button id="search-submit" class="btn btn-success" type="submit"></button>
     </form>
           
-    <form id="track-filter-form" method="POST" action="/track-filter">
-        <h2 class="display-5">Select from the filters below to refine your matches.</h2>
-
+    <form id="track-filter-form" class="hidden" method="POST" action="/filter-tracks">
         {{ track_filter_form.hidden_tag() }}
     
         {% for field in track_filter_form if field.widget.input_type != 'hidden' %}
@@ -48,25 +72,10 @@
           </p>
         {% endfor %}
     
-        <button class="btn btn-success" id="track-filter-submit" type="submit">Submit</button>
+        <button id="track-filter-submit" class="btn btn-success" type="submit">Find Matching Tracks</button>
     </form>
-    
-    <form id="artist-filter-form" method="POST" action="/artist-filter">
-        {{ artist_filter_form.hidden_tag() }}
-    
-        {% for field in artist_filter_form if field.widget.input_type != 'hidden' %}
-          <p>
-            {{ field.label }}
-            {{ field }}
-      
-            {% for err in field.errors %}
-              {{ err }}
-            {% endfor %}
-          </p>
-        {% endfor %}
-    
-        <button class="btn btn-success" id="track-filter-submit" type="submit">Submit</button>
-    </form>
+  
+    <button id="start-over" class="btn btn-outline-success hidden" type="button">Start Over</button>
 </div>
 
 

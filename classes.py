@@ -1,4 +1,3 @@
-# from flask import Flask, request
 from secrets import client_id, client_secret
 import base64
 import requests
@@ -6,15 +5,16 @@ import datetime
 from urllib.parse import urlencode
 
 
-
 class SpotifyAPI(object):
     """Class for Spotify client."""
     access_token = None
-    access_token_expires: datetime.datetime.utcnow()
-    access_token_did_expire: True
+    access_token_expires = datetime.datetime.utcnow()
+    access_token_did_expire = True
+    refresh_token = None
     client_id = None
     client_secret = None
     token_url = 'https://accounts.spotify.com/api/token'
+    logged_in = False
 
 
     def __init__(self, client_id, client_secret, *args, **kwargs): 
@@ -51,61 +51,123 @@ class SpotifyAPI(object):
         return endpoint_headers
 
 
-    def get_token_data(self):
-        """Generate token request body data."""
+    def perform_user_auth(self, user_auth_token):
+        """Send token data to Spotify API, return authorization state."""
 
-        return {"grant_type": "client_credentials"}
+        data = {
+            "grant_type": "authorization_code",
+            "code": user_auth_token,
+            "redirect_uri": "http://127.0.0.1:5000/spotify_callback"
+            # 'client_id': client_id,
+            # 'client_secret': client_secret
+        }
 
+        headers = self.get_token_headers()
 
-    def perform_auth(self):
-        """Send token auth data to Spotify API, return authorized state."""
-
-        token_url = self.token_url
-        token_data = self.get_token_data()
-        token_headers = self.get_token_headers()
-
-        res = requests.post(token_url, data=token_data, headers=token_headers)
-
+        res = requests.post(self.token_url, data=data, headers=headers)
+        
         if res.status_code not in range(200, 204):
-            raise Exception("Could not authenticate client")
-            # return False
+            raise Exception("Could not authorize user.")
 
         self.access_token = res.json()['access_token']
+        self.refresh_token = res.json()['refresh_token']
         expires_in = res.json()['expires_in']
         expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)
         self.access_token_expires = expires
         self.access_token_did_expire = expires < datetime.datetime.utcnow()
+        self.logged_in = True
+
+        print('############## self.access_token #####################')
+        print(self.access_token)
+        print('############## self.access_token #####################')
+        self.get_user_id()
+        
         return True
 
 
-    def get_access_token(self):
-        """Get access token if it exists, perform auth if it doesn't."""
+    # def get_access_token(self):
+    #     """Get access token if it exists, perform auth if it doesn't, refresh auth if expired."""
 
-        if self.access_token_expires < datetime.datetime.utcnow():
-            self.perform_auth()
-            return self.get_access_token()
-        elif self.access_token == None:
-            self.perform_auth()
-            return self.get_access_token()
+    #     if self.access_token_did_expire:
+    #         data = {
+    #             "grant_type": "refresh_token",
+    #             'refresh_token': self.refresh_token
+    #         }
+    #         headers = self.get_token_headers()
+    #         res = requests.post(self.token_url, data=data, headers=headers)
+    #         print('###############refresh res#####################')
+    #         print(res.json())
+    #         print('###############refresh res#####################')
+    #         self.access_token = res.json()['access_token']
 
-        return self.access_token
+    #     elif self.access_token == None:
+    #         self.perform_user_auth()
+
+    #     return self.access_token
+    
+
+    # def refresh_auth():
+    #     """Send request to Spotify API to refresh access_token"""
+
+    #     data = {
+    #         "grant_type": "refresh_token",
+    #         'refresh_token': self.refresh_token
+    #     }
+
+    #     headers = self.get_token_headers()
+
+    #     res = requests.post(self.token_url, data=data, headers=headers)
+
+    #     self.access_token = res.json()['access_token']
+
+    #     return self.get_access_token()
+
+
+    # def perform_auth(self):
+    #     """Send token auth data to Spotify API, return authorized state."""
+
+    #     token_url = self.token_url
+    #     token_data = self.get_token_data()
+    #     token_headers = self.get_token_headers()
+
+    #     res = requests.post(token_url, data=token_data, headers=token_headers)
+
+    #     if res.status_code not in range(200, 204):
+    #         raise Exception("Could not authenticate client")
+    #         # return False
+
+    #     self.access_token = res.json()['access_token']
+    #     expires_in = res.json()['expires_in']
+    #     expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)
+    #     self.access_token_expires = expires
+    #     self.access_token_did_expire = expires < datetime.datetime.utcnow()
+    #     return True
+
+
+    # def get_access_token(self):
+    #     """Get access token if it exists, perform auth if it doesn't."""
+
+    #     if self.access_token_expires < datetime.datetime.utcnow():
+    #         self.perform_auth()
+    #         return self.get_access_token()
+    #     elif self.access_token == None:
+    #         self.perform_auth()
+    #         return self.get_access_token()
+
+    #     return self.access_token
 
 
     def search(self, query, search_type, limit=10):
         """Perform search of Spotify API for track or artist."""
             
-        token = self.get_access_token()    
         headers = self.get_endpoint_headers()
 
         endpoint = "https://api.spotify.com/v1/search"
 
         data = urlencode({"q": query, "type": search_type, "limit": limit})
-        print(data)
         lookup_url = f"{endpoint}?{data}"
-        print(lookup_url)
 
         res = requests.get(lookup_url, headers=headers)
-        print(res)
 
         if res.status_code not in range(200, 204):
             return {}
@@ -143,7 +205,7 @@ class SpotifyAPI(object):
         return res.json()
         
         
-    def get_audio_features(self, track_id):
+    def get_audio_feature_values(self, track_id):
         """Return audio features object with given track id."""
 
         endpoint = f"https://api.spotify.com/v1/audio-features/{track_id}"
@@ -152,5 +214,124 @@ class SpotifyAPI(object):
 
         return res.json()
 
+
+    def get_seed_recommendations(self, query_data):
+        """Return recommendation object for given track."""
+
+        endpoint = "https://api.spotify.com/v1/recommendations"
+        headers = self.get_endpoint_headers()
+        data = query_data
+        lookup_url = f"{endpoint}?{data}"
+
+        res = requests.get(lookup_url, headers=headers)
+
+        return res.json()
+
+
+    def build_track_filter_query(self, track_id, track_popularity, energyUI, danceabilityUI, tempoUI, vibeUI, popularityUI, audioFeaturesValues):
+        """Build query string based on user filter selections."""
+
+        energy_ref = audioFeaturesValues['energy']
+        danceability_ref = audioFeaturesValues['danceability']
+        tempo_ref = audioFeaturesValues['tempo']
+        vibe_ref = audioFeaturesValues['valence']
+        popularity_ref = track_popularity
+
+        if energyUI == "more_energetic":
+            energy_delta = "min_energy"
+        elif energyUI == "less_energetic":
+            energy_delta = "max_energy"
+        else:
+            energy_delta = "target_energy"        
+            
+        if danceabilityUI == "more_danceable":
+            danceability_delta = "min_danceability"
+        elif danceabilityUI == "less_danceable":
+            danceability_delta = "max_danceability"
+        else:
+            danceability_delta = "target_danceability"        
+            
+        if tempoUI == "faster":
+            tempo_delta = "min_tempo"
+        elif tempoUI == "slower":
+            tempo_delta = "max_tempo"
+        else:
+            tempo_delta = "target_tempo"        
+            
+        if vibeUI == "happier_vibes":
+            vibe_delta = "min_valence"
+        elif vibeUI == "sadder_vibes":
+            vibe_delta = "max_valence"
+        else:
+            vibe_delta = "target_valence"        
+        
+        if popularityUI == "more_energetic":
+            popularity_delta = "min_popularity"
+        elif popularityUI == "less_energetic":
+            popularity_delta = "max_popularity"
+        else:
+            popularity_delta = "target_popularity"
+
+        data = urlencode({
+            "seed_tracks": track_id,
+            "limit": 10,
+            energy_delta: energy_ref,
+            danceability_delta: danceability_ref,
+            tempo_delta: tempo_ref,
+            vibe_delta: vibe_ref,
+            popularity_delta: popularity_ref
+        })
+
+        return data    
+
+
+    # def get_user_id(self):
+    #     """Get user data, return user id"""
+
+    #     endpoint = "https://api.spotify.com/v1/me"
+    #     headers = self.get_endpoint_headers()
+
+    #     res = requests.get(endpoint, headers=headers)
+    #     print('#################### user_id ############################')
+    #     print(res.json()['id'])
+    #     print('#################### user_id ############################')
+    #     return res.json()['id']
+
+
+    # def get_playlists(self):
+    #     """Get user playlists"""
+
+    #     endpoint = "https://api.spotify.com/v1/me/playlists"
+    #     headers = self.get_endpoint_headers()
+    #     data = urlencode({"limit": 50})
+    #     lookup_url = f"{endpoint}?{data}"
+
+    #     res = requests.get(lookup_url, headers=headers)
+
+    #     return res.json()
+
+
+    # def modify_playlist(self, playlist_id, track_id, modify_type):
+    #     """Add or remove item of given track_id from user playlist of given playlist_id"""
+
+    #     endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    #     headers = {
+    #         "Authorization": f"Bearer {self.access_token}",
+    #         "Content-Type": "application/json"
+    #     }
+
+    #     data = urlencode(
+    #         {"uris": f"spotify:track:{track_id}"}
+    #     )
+    #     lookup_url = f"{endpoint}?{data}"
+
+    #     if modify_type == "remove":
+    #         res = requests.delete(lookup_url, headers=headers)
+    #         return res.json()
+
+    #     if modify_type == "add":
+    #         res = requests.post(lookup_url, headers=headers)
+    #         return res.json()
+        
 
 spotify = SpotifyAPI(client_id, client_secret)

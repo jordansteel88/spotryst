@@ -32,19 +32,28 @@ class Results(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    
-    related_track = db.Column(db.Text,
-                              nullable=False)
-    relation_params = db.Column(db.Text,
+    reference_track_id = db.Column(db.Integer,
+                         nullable=False)
+    reference_track_name = db.Column(db.Text,
+                                   nullable=False)
+    reference_track_artist = db.Column(db.Text,
+                                   nullable=False)
+    related_track_id = db.Column(db.Text,
+                              nullable=False) 
+    related_track_name = db.Column(db.Text,
+                                   nullable=False)
+    related_track_artist = db.Column(db.Text,
+                                   nullable=False)
+    relation_params = db.Column(db.ARRAY(db.Text),
                                 nullable=False)
     timestamp = db.Column(db.DateTime,
                           nullable=False,
                           default=datetime.utcnow())
     
     def __repr__(self):
-        """Show result's id, timestamp, and related track."""
+        """Show result's id, timestamp, reference track and related track."""
 
-        return f"<Post {self.id} {self.timestamp} {self.related_track}>"    
+        return f"<Post {self.id} {self.timestamp} from {self.reference_track_name} to {self.related_track_name}>"    
 
 
 

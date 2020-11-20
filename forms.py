@@ -8,42 +8,48 @@ from wtforms.validators import InputRequired
 class SearchForm(FlaskForm):
     """Form for selecting initial track or artist."""
 
-    query = StringField("Search Query", 
-            validators=[InputRequired(message="Please enter an artist or a track to search")])
-    search_type = SelectField("Search Type", 
-                  choices=[("artist", "Artist"), ("track", "Track")],
-                  validators=[InputRequired(message="Select a type of search")])
+    # search_type = SelectField("Search Type", 
+    #               choices=[("artist", "Artist"), ("track", "Track")],
+    #               validators=[InputRequired()])
+    query = StringField("Search Query",
+                         validators=[InputRequired()])
 
 
 class TrackFilterForm(FlaskForm):
     """Form for filtering track search parameters."""
 
     energy = SelectField("Energy", 
-                  choices=[("more_energetic", "More Energetic"), 
-                           ("less_energetic", "Less Energetic"),
-                           ("same_energy", "Same Energy")],
-                  validators=[InputRequired(message="Please make a selection")])
+                  choices=[("same_energy", "Same Energy"),
+                           ("less_energetic", "Less Energetic"), 
+                           ("more_energetic", "More Energetic")],
+                  validators=[InputRequired()])
     danceability = SelectField("Danceability", 
-                  choices=[("more_danceable", "More Danceable"), 
+                  choices=[("same_danceability", "Same Danceability"), 
                            ("less_danceable", "Less Danceable"),
-                           ("same_danceability", "Same Danceability")],
-                  validators=[InputRequired(message="Please make a selection")])
+                           ("more_danceable", "More Danceable")],
+                  validators=[InputRequired()])
     tempo = SelectField("Tempo", 
-                  choices=[("faster", "Faster"), 
+                  choices=[("same_tempo", "Same Tempo"), 
                            ("slower", "Slower"),
-                           ("same_tempo", "Same Tempo")],
-                  validators=[InputRequired(message="Please make a selection")])
+                           ("faster", "Faster")],
+                  validators=[InputRequired()])
     vibe = SelectField("Vibe", 
-                  choices=[("happier_vibes", "Happier Vibes"), 
+                  choices=[("same_vibe", "Same Vibe"), 
                            ("sadder_vibes", "Sadder Vibes"),
-                           ("same_vibe", "Same Vibe")],
-                  validators=[InputRequired(message="Please make a selection")])    
+                           ("happier_vibes", "Happier Vibes")],
+                  validators=[InputRequired()])                  
+    popularity = SelectField("Popularity", 
+                  choices=[("same_popularity", "Same Popularity"),
+                           ("less popular", "Less Popular"),
+                           ("more_popular", "More Popular")],
+                  validators=[InputRequired()])    
     
 
-class ArtistFilterForm(FlaskForm):
-    """Form for filtering artist search parameters."""
+# class ArtistFilterForm(FlaskForm):
+#     """Form for filtering artist search parameters."""
 
-    popularity = SelectField("Popularity", 
-                  choices=[("more_popular", "More Popular"), 
-                           ("less_popular", "Less Popular"),],
-                  validators=[InputRequired(message="Please make a selection")])
+#     popularity = SelectField("Popularity", 
+#                   choices=[("same_popularity", "Same Popularity"),
+#                            ("less popular", "Less Popular"),
+#                            ("more_popular", "More Popular")],
+#                   validators=[InputRequired()])
