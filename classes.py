@@ -203,6 +203,19 @@ class SpotifyAPI(object):
         res = requests.get(endpoint, headers=headers)
 
         return res.json()
+
+
+    def get_artists_top_track(self, artist_id):
+        """Return top track object with given id"""
+
+        endpoint = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks"
+        headers = self.get_endpoint_headers()
+        data = urlencode({"country": "from_token"})
+        lookup_url = f"{endpoint}?{data}"
+
+        res = requests.get(lookup_url, headers=headers)
+
+        return res.json()
         
         
     def get_audio_feature_values(self, track_id):
@@ -285,53 +298,76 @@ class SpotifyAPI(object):
         return data    
 
 
-    # def get_user_id(self):
-    #     """Get user data, return user id"""
+    def get_user_id(self):
+        """Get user data, return user id"""
 
-    #     endpoint = "https://api.spotify.com/v1/me"
-    #     headers = self.get_endpoint_headers()
+        endpoint = "https://api.spotify.com/v1/me"
+        headers = self.get_endpoint_headers()
 
-    #     res = requests.get(endpoint, headers=headers)
-    #     print('#################### user_id ############################')
-    #     print(res.json()['id'])
-    #     print('#################### user_id ############################')
-    #     return res.json()['id']
-
-
-    # def get_playlists(self):
-    #     """Get user playlists"""
-
-    #     endpoint = "https://api.spotify.com/v1/me/playlists"
-    #     headers = self.get_endpoint_headers()
-    #     data = urlencode({"limit": 50})
-    #     lookup_url = f"{endpoint}?{data}"
-
-    #     res = requests.get(lookup_url, headers=headers)
-
-    #     return res.json()
+        res = requests.get(endpoint, headers=headers)
+        print('#################### user_id ############################')
+        print(res.json()['id'])
+        print('#################### user_id ############################')
+        return res.json()['id']
 
 
-    # def modify_playlist(self, playlist_id, track_id, modify_type):
-    #     """Add or remove item of given track_id from user playlist of given playlist_id"""
+    def get_playlists(self):
+        """Get user playlists"""
 
-    #     endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-    #     headers = {
-    #         "Authorization": f"Bearer {self.access_token}",
-    #         "Content-Type": "application/json"
-    #     }
+        endpoint = "https://api.spotify.com/v1/me/playlists"
+        headers = self.get_endpoint_headers()
+        data = urlencode({"limit": 50})
+        lookup_url = f"{endpoint}?{data}"
 
-    #     data = urlencode(
-    #         {"uris": f"spotify:track:{track_id}"}
-    #     )
-    #     lookup_url = f"{endpoint}?{data}"
+        res = requests.get(lookup_url, headers=headers)
 
-    #     if modify_type == "remove":
-    #         res = requests.delete(lookup_url, headers=headers)
-    #         return res.json()
+        return res.json()
 
-    #     if modify_type == "add":
-    #         res = requests.post(lookup_url, headers=headers)
-    #         return res.json()
+
+    def modify_playlist(self, playlist_id, track_id, modify_type):
+        """Add or remove item of given track_id from user playlist of given playlist_id"""
+
+        endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+
+        data = urlencode({"uris": f"spotify:track:{track_id}"})
+        lookup_url = f"{endpoint}?{data}"
+
+        if modify_type == "remove":
+            res = requests.delete(lookup_url, headers=headers)
+            return res.json()
+
+        if modify_type == "add":
+            res = requests.post(lookup_url, headers=headers)
+            return res.json()
+
+    
+    def follow_artist(self, artist_id):
+        """Follow an artist with given ID"""
+
+        endpoint = f"https://api.spotify.com/v1/me/following"
+
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+
+        data = urlencode({
+            "type": "artist",
+            "ids": artist_id
+        })
+
+        lookup_url = f"{endpoint}?{data}"
+
+        res = requests.put(lookup_url, headers=headers)
+
+        if res.status_code == 204:
+            return True
+        else:
+            return False
         
 
 spotify = SpotifyAPI(client_id, client_secret)

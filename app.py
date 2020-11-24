@@ -86,6 +86,17 @@ def get_related_artists():
 
     return res
     
+    
+@app.route("/top-track", methods=["POST"])
+def get_artists_top_track():
+    """Get top track for artist with given id.""" 
+
+    artist_id = request.json['artistID']
+
+    res = spotify.get_artists_top_track(artist_id)
+
+    return res
+    
 
 @app.route("/audio-features", methods=["POST"])
 def get_audio_features():
@@ -125,15 +136,43 @@ def filter_tracks():
     return {"errors": {"results": "Form validation error"}} 
     
     
-# @app.route("/playlist_add", methods=["POST"])
-# def playlist_add():
-#     """Add track of given id to playlist of given id """
+@app.route("/get_playlists")
+def get_playlists():
+    """Get a list of user playlists."""
 
-#     track_id = request.json['trackID']
+    res = spotify.get_playlists()
 
-#     res = spotify.get_audio_feature_values(track_id)
+    return res
 
-#     return res
+
+@app.route("/playlist_add", methods=["POST"])
+def playlist_add():
+    """Add track of given id to playlist of given id."""
+
+    playlist_id = request.json['playlistID']
+    track_id = request.json['trackID']
+
+    modify_type = "add"
+
+    res = spotify.modify_playlist(playlist_id, track_id, modify_type)
+
+    return res
+
+
+@app.route("/follow", methods=["PUT"])
+def follow_artist():
+    """Follow artist of given id"""
+
+    artist_id = request.json['artistID']
+
+    res = spotify.follow_artist(artist_id)
+
+    print('########## follow res###################')
+    print(res)
+    print('########## follow res###################')    
+
+    return str(res)
+
 
 
 

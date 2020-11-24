@@ -1,9 +1,15 @@
+html, 
+body {
+    height: 100%;
+}
+
 body {
     background: #000000;
-    background: -webkit-linear-gradient(to right, #434343, #000000);  
-    background: linear-gradient(to right, #434343, #000000);
+    background: -webkit-linear-gradient(120deg, #434343, #000000);  
+    background: linear-gradient(120deg, #434343, #000000);
     color: #EEEEEE;
     font-family: 'Montserrat', sans-serif;
+
 }
 
 .hidden {
@@ -27,8 +33,31 @@ label {
     margin-bottom: 0; 
 }
 
+/* #instructions-display {
+    border: thick double green;
+} */
 
-#start-over {
-    margin-top: 40px;
-    padding: 0 10%;
+#info-display {
+    background-color: rgb(0, 136, 0);
+    color: #EEEEEE;
+    border-radius: 3px;
+    padding: 3px 0;
+}
+
+/* .modal-content {
+    background-color: rgb(56, 56, 56);
+    border: 5px solid rgb(60, 148, 60); 
+    } */
+
+.modal-content,
+.modal-header {
+    background: #000000;
+    background: -webkit-linear-gradient(to top, #2c2c2c, #020202);  
+    background: linear-gradient(to top, #2c2c2c, #020202);
+    color: #EEEEEE;
+}
+
+.modal-backdrop
+{
+    opacity:0.9 !important;
 }
