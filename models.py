@@ -6,71 +6,53 @@ from datetime import datetime
 db = SQLAlchemy()
 
 
-class User(db.Model):
-    """Model for User."""
+class TrackResults(db.Model):
+    """Model for TrackResults."""
 
-    __tablename__ = 'users'
+    __tablename__ = 'track_results'
 
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    username = db.Column(db.Text,
+    user_id = db.Column(db.Text,
+                        nullable=False)
+    track_id = db.Column(db.Text,
                          nullable=False)
+    track_name = db.Column(db.Text,
+                           nullable=False)
+    track_artist = db.Column(db.Text,
+                             nullable=False)
+    track_popularity = db.Column(db.Integer,
+                                 nullable=False)
 
 
     def __repr__(self):
-        """Show user's id and username."""
+        """Show result's id, track name, and track artist."""
 
-        return f"<Post {self.id} {self.username}>"
+        return f"<Track {self.id} {self.track_name} - {self.track_artist}>" 
+                                   
 
-
-class Results(db.Model):
+class ArtistResults(db.Model):
     """Model for Results."""
 
-    __tablename__ = 'results'
+    __tablename__ = 'artist_results'
 
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    reference_track_id = db.Column(db.Integer,
-                         nullable=False)
-    reference_track_name = db.Column(db.Text,
-                                   nullable=False)
-    reference_track_artist = db.Column(db.Text,
-                                   nullable=False)
-    related_track_id = db.Column(db.Text,
-                              nullable=False) 
-    related_track_name = db.Column(db.Text,
-                                   nullable=False)
-    related_track_artist = db.Column(db.Text,
-                                   nullable=False)
-    relation_params = db.Column(db.ARRAY(db.Text),
-                                nullable=False)
-    timestamp = db.Column(db.DateTime,
-                          nullable=False,
-                          default=datetime.utcnow())
+    user_id = db.Column(db.Text,
+                        nullable=False)
+    artist_id = db.Column(db.Text,
+                          nullable=False)
+    artist_name = db.Column(db.Text,
+                           nullable=False)
     
     def __repr__(self):
-        """Show result's id, timestamp, reference track and related track."""
+        """Show result's id and artist name."""
 
-        return f"<Post {self.id} {self.timestamp} from {self.reference_track_name} to {self.related_track_name}>"    
+        return f"<Artist {self.id} {self.artist_name}>"    
 
 
-
-class UserResults(db.Model):
-    """Join table for users and results."""
-
-    __tablename__ = 'users_results'
-
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True) 
-    user_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
-                            nullable=False)
-    result_id = db.Column(db.Integer,
-                            db.ForeignKey('results.id'),
-                            nullable=False)
 
 
 def connect_db(app):

@@ -14,19 +14,19 @@
 
 <body>
 
-
 <div class="container text-center">
     <h1 class="display-1 mb-0 title"><a href="/">Spotryst</a></h1>
     <p class="display-5 mb-5 font-weight-bold subtitle">A SPOTIFY CONCIERGE</p>
 
-    <div id="login" class="hidden">
-      <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private">
+    <p id="info-display-alt" class="mb-4 hidden">Results Cleared</p>
+
+    <div id="login">
+      <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private">
         <button id="button-login" class="btn btn-success btn-lg p-4">
           Login to Spotify
         </button>
       </a>
     </div>
-
 
     <h3 id="instructions-display" class="display-5 mb-4 hidden"></h3>
 
@@ -37,20 +37,19 @@
       <button id="button-track" class="btn btn-success btn-lg ml-2 p-4" type="button">Start with a track</button>
     </div>
 
-    <div id="nav-directions" class="hidden mt-4">
-      <p>Click on the Spotryst logo at any point to start over</p>
-    </div>
-
     <div id="results" class="container hidden"></div>
 
     <div id="playlists" class="hidden"></div>
+
+    <div id="nav-directions" class="hidden mt-4">
+      <p>Click on the Spotryst logo at any point to start over</p>
+    </div>
 
     <form id="search-form" class="hidden" method="POST" action="/search">
         {{ search_form.hidden_tag() }}
     
         {% for field in search_form if field.widget.input_type != 'hidden' %}
           <p>
-            <!-- {{ field.label }} -->
             {{ field }}
       
             {% for err in field.errors %}
@@ -59,9 +58,18 @@
           </p>
         {% endfor %}
     
-        <button id="search-submit" class="btn btn-success" type="submit"></button>
+        <button id="search-submit" class="btn btn-success mt-2" type="submit"></button>
     </form>
-          
+
+    <div id="history">
+      <h5 id="history-or" class="my-5 hidden">- Or -</h5>
+      <h3 id="history-instructions" class="mt-5 hidden">Make a selection from your previous search results</h3>
+      <button id="button-artist-history" class="btn btn-success mt-2 hidden" type="button">View Results History</button>
+      <button id="button-track-history" class="btn btn-success mt-2 hidden" type="button">View Results History</button>
+      <button id="delete-artist-history" class="btn btn-outline-danger mt-4 hidden" type="button">Clear Results</button>
+      <button id="delete-track-history" class="btn btn-outline-danger mt-4 hidden" type="button">Clear Results</button>
+    </div>
+
     <form id="track-filter-form" class="hidden" method="POST" action="/filter-tracks">
         {{ track_filter_form.hidden_tag() }}
     
@@ -76,15 +84,10 @@
           </p>
         {% endfor %}
     
-        <button id="track-filter-submit" class="btn btn-success" type="submit">Find Matching Tracks</button>
+        <button id="track-filter-submit" class="btn btn-success mt-4" type="submit">Find Matching Tracks</button>
     </form>
-  
-
-
-
 
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" 
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" 
@@ -96,7 +99,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
-<script src="/static/app.js"></script>
+<script type="module" src="/static/app.js"></script>
 
 </body>
 </html>

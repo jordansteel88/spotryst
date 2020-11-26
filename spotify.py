@@ -1,4 +1,6 @@
 from secrets import client_id, client_secret
+from flask import session
+from models import db, connect_db, TrackResults, ArtistResults
 import base64
 import requests
 import datetime
@@ -58,14 +60,12 @@ class SpotifyAPI(object):
             "grant_type": "authorization_code",
             "code": user_auth_token,
             "redirect_uri": "http://127.0.0.1:5000/spotify_callback"
-            # 'client_id': client_id,
-            # 'client_secret': client_secret
         }
 
         headers = self.get_token_headers()
 
         res = requests.post(self.token_url, data=data, headers=headers)
-        
+
         if res.status_code not in range(200, 204):
             raise Exception("Could not authorize user.")
 
@@ -76,85 +76,9 @@ class SpotifyAPI(object):
         self.access_token_expires = expires
         self.access_token_did_expire = expires < datetime.datetime.utcnow()
         self.logged_in = True
-
-        print('############## self.access_token #####################')
-        print(self.access_token)
-        print('############## self.access_token #####################')
         self.get_user_id()
         
         return True
-
-
-    # def get_access_token(self):
-    #     """Get access token if it exists, perform auth if it doesn't, refresh auth if expired."""
-
-    #     if self.access_token_did_expire:
-    #         data = {
-    #             "grant_type": "refresh_token",
-    #             'refresh_token': self.refresh_token
-    #         }
-    #         headers = self.get_token_headers()
-    #         res = requests.post(self.token_url, data=data, headers=headers)
-    #         print('###############refresh res#####################')
-    #         print(res.json())
-    #         print('###############refresh res#####################')
-    #         self.access_token = res.json()['access_token']
-
-    #     elif self.access_token == None:
-    #         self.perform_user_auth()
-
-    #     return self.access_token
-    
-
-    # def refresh_auth():
-    #     """Send request to Spotify API to refresh access_token"""
-
-    #     data = {
-    #         "grant_type": "refresh_token",
-    #         'refresh_token': self.refresh_token
-    #     }
-
-    #     headers = self.get_token_headers()
-
-    #     res = requests.post(self.token_url, data=data, headers=headers)
-
-    #     self.access_token = res.json()['access_token']
-
-    #     return self.get_access_token()
-
-
-    # def perform_auth(self):
-    #     """Send token auth data to Spotify API, return authorized state."""
-
-    #     token_url = self.token_url
-    #     token_data = self.get_token_data()
-    #     token_headers = self.get_token_headers()
-
-    #     res = requests.post(token_url, data=token_data, headers=token_headers)
-
-    #     if res.status_code not in range(200, 204):
-    #         raise Exception("Could not authenticate client")
-    #         # return False
-
-    #     self.access_token = res.json()['access_token']
-    #     expires_in = res.json()['expires_in']
-    #     expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)
-    #     self.access_token_expires = expires
-    #     self.access_token_did_expire = expires < datetime.datetime.utcnow()
-    #     return True
-
-
-    # def get_access_token(self):
-    #     """Get access token if it exists, perform auth if it doesn't."""
-
-    #     if self.access_token_expires < datetime.datetime.utcnow():
-    #         self.perform_auth()
-    #         return self.get_access_token()
-    #     elif self.access_token == None:
-    #         self.perform_auth()
-    #         return self.get_access_token()
-
-    #     return self.access_token
 
 
     def search(self, query, search_type, limit=10):
@@ -178,7 +102,7 @@ class SpotifyAPI(object):
     def get_artist(self, artist_id):
         """Return artist object with given id."""
         
-        endpoint = f"https://api.s()potify.com/v1/artists/{artist_id}"
+        endpoint = f"https://api.spotify.com/v1/artists/{artist_id}"
         headers = self.get_endpoint_headers()
         res = requests.get(endpoint, headers=headers)
 
@@ -305,9 +229,7 @@ class SpotifyAPI(object):
         headers = self.get_endpoint_headers()
 
         res = requests.get(endpoint, headers=headers)
-        print('#################### user_id ############################')
-        print(res.json()['id'])
-        print('#################### user_id ############################')
+
         return res.json()['id']
 
 
@@ -368,6 +290,57 @@ class SpotifyAPI(object):
             return True
         else:
             return False
+
+    
+    def get_results_history(self, search_type):
+        """Retrieve artist dictionary from db."""
+
+        history_dict_list = []
+
+        if search_type == "artist":
+            history = ArtistResults.query.filter(ArtistResults.user_id == session['user_id']).all()
+
+            for artist in history:
+                result = {"id": artist.artist_id, "name": artist.artist_name}
+                if result not in history_dict_list:
+                    history_dict_list.append(result)
+
+        if search_type == "track":
+            history = TrackResults.query.filter(TrackResults.user_id == session['user_id']).all()
+
+            for track in history:
+                result = {"id": track.track_id, "name": track.track_name, "artist": track.track_artist, "popularity": track.track_popularity}
+                if result not in history_dict_list:
+                    history_dict_list.append(result)
+
+        return history_dict_list
+
+
+    def save_result(self, result_type, result_id, track_popularity):
+        """Save search result to db."""
+
+        if result_type == "artist":
+            data = self.get_artist(result_id)
+            new_result = ArtistResults(
+                user_id = session['user_id'],
+                artist_id = data['id'],
+                artist_name = data['name']
+            )
+
+        if result_type == "track":
+            data = self.get_track(result_id)
+            new_result = TrackResults(
+                user_id = session['user_id'],
+                track_id = data['id'],
+                track_name = data['name'],
+                track_artist = data['artists'][0]['name'],
+                track_popularity = track_popularity
+            )
+
+        db.session.add(new_result)
+        db.session.commit()
         
+        return new_result
+
 
 spotify = SpotifyAPI(client_id, client_secret)

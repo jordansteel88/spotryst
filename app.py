@@ -1,14 +1,11 @@
-from flask import Flask, redirect, render_template, request, url_for, g
-# from flask_cors import CORS, cross_origin
+from flask import Flask, redirect, render_template, request, url_for, session, jsonify
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Results, UserResults
+from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
-from classes import SpotifyAPI, spotify
+from spotify import spotify
 
 app = Flask(__name__)
-
-# CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///spotryst'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -18,8 +15,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 
-# connect_db(app)
-# db.create_all()
+connect_db(app)
+db.create_all()
 
 
 @app.route("/")
@@ -41,22 +38,24 @@ def spotify_callback():
     user_auth_token = request.args['code']    
 
     spotify.perform_user_auth(user_auth_token)
-
-    #session variables
+    session['user_id'] = spotify.get_user_id()
 
     return redirect('/')
     
 
-# @app.route("/check_login")
-# def check_login():
-#     """Check logged in state and return a boolean"""
+@app.route("/check_login")
+def check_login():
+    """Check logged in state and return a boolean"""
 
-#     state = spotify.get_access_token()
+    test_query = "a"
+    test_search_type = "artist"
 
-#     if state:
-#         return {"logged_in": "true"}
+    res = spotify.search(test_query, test_search_type)
 
-#     return{"logged_in": "false"}
+    if len(res['artists']):
+        return {"logged_in": "True"}
+
+    return {"logged_in": "False"}
 
 
 @app.route("/search", methods=["POST"])
@@ -70,7 +69,7 @@ def search():
         search_type = request.json['search_type']
 
         res = spotify.search(query, search_type, limit=10)
-        
+
         return res
 
     return {"errors": {"results": "Form validation error"}} 
@@ -113,8 +112,8 @@ def get_audio_features():
 def filter_tracks():
     """Filter tracks based on user filter selections."""
 
-    track_id = request.json['trackID']
-    track_popularity = request.json['trackPopularity']
+    track_id = request.json['currentTrackID']
+    track_popularity = request.json['currentTrackPopularity']
 
     audioFeaturesValues = spotify.get_audio_feature_values(track_id)
 
@@ -165,13 +164,72 @@ def follow_artist():
 
     artist_id = request.json['artistID']
 
-    res = spotify.follow_artist(artist_id)
-
-    print('########## follow res###################')
-    print(res)
-    print('########## follow res###################')    
+    res = spotify.follow_artist(artist_id)  
 
     return str(res)
+    
+    
+@app.route("/artist_history")
+def get_artist_history():
+    """Get artist search history for current user"""
+
+    search_type = "artist"
+    history = spotify.get_results_history(search_type)
+
+    return jsonify(history)
+    
+    
+@app.route("/track_history")
+def get_track_history():
+    """Get track search history for current user"""
+
+    search_type = "track"
+    history = spotify.get_results_history(search_type)
+
+    return jsonify(history)
+
+
+@app.route("/save_result", methods=["POST"])
+def save_result():
+    """Save result based on result_type to db."""
+
+    result_type = request.json['result_type']
+
+    if result_type == "artist":
+        result_id = request.json['artistID']
+        track_popularity = None
+        res = spotify.save_result(result_type, result_id, track_popularity)
+
+    if result_type == "track":
+        result_id = request.json['trackID']
+        track_popularity = request.json['trackPopularity']
+        res = spotify.save_result(result_type, result_id, track_popularity)
+
+    return ('', 200)
+        
+
+
+@app.route("/clear_results", methods=["POST"])
+def clear_results():
+    """Delete all data from table based on result_type."""
+
+    result_type = request.json['resultType']
+
+    if result_type == "artist":
+        all_results = ArtistResults.query.all()
+        
+    if result_type == "track":
+        all_results = TrackResults.query.all()
+
+    for result in all_results:
+        db.session.delete(result)
+
+    db.session.commit()
+
+    return ('', 200)
+
+
+
 
 
 

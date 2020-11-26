@@ -37,17 +37,17 @@ label {
     border: thick double green;
 } */
 
-#info-display {
+#info-display,
+#info-display-alt {
     background-color: rgb(0, 136, 0);
     color: #EEEEEE;
     border-radius: 3px;
     padding: 3px 0;
 }
 
-/* .modal-content {
-    background-color: rgb(56, 56, 56);
-    border: 5px solid rgb(60, 148, 60); 
-    } */
+#info-display-alt {
+    background-color: rgb(217,83,79);
+}
 
 .modal-content,
 .modal-header {
