@@ -19,6 +19,16 @@ print('########################################')
 print(app.config['SECRET_KEY'])
 print('########################################')
 
+app.config['client_id'] = os.environ.get('client_id')
+app.config['client_secret'] = os.environ.get('client_secret')
+print('########################################')
+print(app.config['client_id'])
+print(app.config['client_secret'])
+print('########################################')
+
+client_id = app.config['client_id']
+client_secret = app.config['client_secret']
+
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
 
