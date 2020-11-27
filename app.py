@@ -4,7 +4,7 @@ import os
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
-from spotify import spotify
+from spotify import SpotifyAPI
 
 # from user import user
 
@@ -36,6 +36,8 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 db.create_all()
+
+spotify = SpotifyAPI(client_id, client_secret)
 
 
 @app.route("/")
