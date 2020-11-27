@@ -1,4 +1,4 @@
-# from secrets import client_id, client_secret
+from secrets import CLIENT_ID, CLIENT_SECRET
 from flask import session
 from models import db, connect_db, TrackResults, ArtistResults
 from urllib.parse import urlencode
@@ -14,8 +14,8 @@ class SpotifyAPI(object):
     access_token_expires = datetime.datetime.utcnow()
     access_token_did_expire = True
     refresh_token = None
-    client_id = os.environ.get('client_id')
-    client_secret = os.environ.get('client_secret')
+    client_id = None
+    client_secret = None
     token_url = 'https://accounts.spotify.com/api/token'
     logged_in = False
 
@@ -347,5 +347,8 @@ class SpotifyAPI(object):
         
         return new_result
 
+
+client_id = os.environ.get('client_id', CLIENT_ID)
+client_secret = os.environ.get('client_secret', CLIENT_SECRET)
 
 spotify = SpotifyAPI(client_id, client_secret)

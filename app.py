@@ -10,7 +10,8 @@ from spotify import spotify
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///spotryst'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///spotryst'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///spotryst')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['SECRET_KEY'] = "Secret secret, I got a secret."
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret')
