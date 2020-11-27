@@ -1,5 +1,5 @@
-# from secrets import CLIENT_ID, CLIENT_SECRET
-from app import client_id, client_secret
+from secrets import CLIENT_ID, CLIENT_SECRET
+# from app import client_id, client_secret
 from flask import session
 from models import db, connect_db, TrackResults, ArtistResults
 from urllib.parse import urlencode
@@ -349,4 +349,5 @@ class SpotifyAPI(object):
         return new_result
 
 
-spotify = SpotifyAPI(client_id, client_secret)
+# spotify = SpotifyAPI(client_id, client_secret)
+spotify = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
