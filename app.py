@@ -15,6 +15,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['SECRET_KEY'] = "Secret secret, I got a secret."
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret')
+print('########################################')
+print(app.config['SECRET_KEY'])
+print('########################################')
+
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
 
