@@ -348,7 +348,7 @@ class SpotifyAPI(object):
         return new_result
 
 
-client_id = os.environ.get('client_id', CLIENT_ID)
-client_secret = os.environ.get('client_secret', CLIENT_SECRET)
+client_id = os.environ.get('client_id')
+client_secret = os.environ.get('client_secret')
 
 spotify = SpotifyAPI(client_id, client_secret)
