@@ -62,7 +62,8 @@ class SpotifyAPI(object):
         data = {
             "grant_type": "authorization_code",
             "code": user_auth_token,
-            "redirect_uri": "http://127.0.0.1:5000/spotify_callback"
+            "redirect_uri": "https://spotryst.herokuapp.com/spotify_callback"
+            # "redirect_uri": "http://127.0.0.1:5000/spotify_callback"
         }
 
         headers = self.get_token_headers()
