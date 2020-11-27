@@ -1,10 +1,11 @@
-from secrets import client_id, client_secret
+# from secrets import client_id, client_secret
 from flask import session
 from models import db, connect_db, TrackResults, ArtistResults
+from urllib.parse import urlencode
 import base64
 import requests
 import datetime
-from urllib.parse import urlencode
+import os
 # from user import user
 
 class SpotifyAPI(object):
@@ -13,8 +14,8 @@ class SpotifyAPI(object):
     access_token_expires = datetime.datetime.utcnow()
     access_token_did_expire = True
     refresh_token = None
-    client_id = None
-    client_secret = None
+    client_id = os.environ.get('client_id')
+    client_secret = os.environ.get('client_secret')
     token_url = 'https://accounts.spotify.com/api/token'
     logged_in = False
 
@@ -30,6 +31,10 @@ class SpotifyAPI(object):
 
         client_id = self.client_id
         client_secret = self.client_secret
+        print('############# client id ################')
+        print(client_id)
+        print('############# client secret ################')
+        print(client_secret)
         if client_secret == None or client_id == None:
             raise Exception('You must set client_id and client_secret')
         client_creds = f"{client_id}:{client_secret}"

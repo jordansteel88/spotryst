@@ -1,16 +1,19 @@
 from flask import Flask, redirect, render_template, request, url_for, session, jsonify
 import requests
+import os
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
 from spotify import spotify
+
 # from user import user
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///spotryst'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = "Secret secret, I got a secret."
+# app.config['SECRET_KEY'] = "Secret secret, I got a secret."
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
 
