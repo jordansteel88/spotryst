@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
 from spotify import SpotifyAPI
-from secrets import CLIENT_ID, CLIENT_SECRET
+# from secrets import CLIENT_ID, CLIENT_SECRET
 
 # from user import user
 
@@ -14,8 +14,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///spotryst')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret')
-app.config['client_id'] = os.environ.get('client_id', CLIENT_ID)
-app.config['client_secret'] = os.environ.get('client_secret', CLIENT_SECRET)
+app.config['client_id'] = os.environ.get('client_id')
+app.config['client_secret'] = os.environ.get('client_secret')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
 
