@@ -5,7 +5,7 @@ import base64
 import requests
 import datetime
 from urllib.parse import urlencode
-
+# from user import user
 
 class SpotifyAPI(object):
     """Class for Spotify client."""

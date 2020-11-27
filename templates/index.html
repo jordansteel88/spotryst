@@ -45,7 +45,7 @@
       <p>Click on the Spotryst logo at any point to start over</p>
     </div>
 
-    <form id="search-form" class="hidden" method="POST" action="/search">
+    <form id="search-form" class="hidden form-group" method="POST" action="/search">
         {{ search_form.hidden_tag() }}
     
         {% for field in search_form if field.widget.input_type != 'hidden' %}

@@ -64,6 +64,8 @@ function handleSearchResponse(res, search_type) {
                 resLink.click(handleArtistChoiceUI.bind(this, `${result.id}`, save));
                 $('#results').append(resLink);
             } 
+        } else {
+            $('#instructions-display').html('Sorry, we couldn\'t find any matches <br> Click on the Spotryst log to start over');
         }
     } 
     
@@ -76,13 +78,13 @@ function handleSearchResponse(res, search_type) {
                 resLink.click(handleTrackChoice.bind(this, `${result.id}`, `${result.popularity}`, save));
                 $('#results').append(resLink);
             }
+        } else {
+            $('#instructions-display').html('Sorry, we couldn\'t find any matches <br> Click on the Spotryst log to start over');
         }
     } 
     
     else {
-        $('#results').html(`
-            <h2 class="display-5">No results. Try adjusting your search query.</h2>
-        `);
+        $('#instructions-display').html('Oops! <br> There seems to be an issue on the server <br> Click on the Spotryst log to start over');
     }
 }
 

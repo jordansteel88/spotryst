@@ -4,6 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
 from spotify import spotify
+# from user import user
 
 app = Flask(__name__)
 
