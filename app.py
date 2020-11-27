@@ -5,30 +5,17 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, TrackResults, ArtistResults
 from forms import SearchForm, TrackFilterForm
 from spotify import SpotifyAPI
+from secrets import CLIENT_ID, CLIENT_SECRET
 
 # from user import user
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///spotryst'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///spotryst')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SECRET_KEY'] = "Secret secret, I got a secret."
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret')
-print('########################################')
-print(app.config['SECRET_KEY'])
-print('########################################')
-
-app.config['client_id'] = os.environ.get('client_id')
-app.config['client_secret'] = os.environ.get('client_secret')
-print('########################################')
-print(app.config['client_id'])
-print(os.environ.get('client_id'))
-print('########################################')
-
-client_id = os.environ.get('client_id')
-client_secret = os.environ.get('client_secret')
-
+app.config['client_id'] = os.environ.get('client_id', CLIENT_ID)
+app.config['client_secret'] = os.environ.get('client_secret', CLIENT_SECRET)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
 
@@ -37,8 +24,9 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 db.create_all()
 
+client_id = app.config['client_id']
+client_secret = app.config['client_secret']
 spotify = SpotifyAPI(client_id, client_secret)
-
 
 @app.route("/")
 def homepage():

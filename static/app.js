@@ -1,7 +1,8 @@
 import * as Artist from './utilities/artist.js';
 import * as Track from './utilities/tracks.js';
 import * as UI from './utilities/UIhelpers.js';  
-const BASE_URL = 'http://127.0.0.1:5000';
+// const BASE_URL = 'http://127.0.0.1:5000';
+const BASE_URL = 'https://spotryst.herokuapp.com/';
 let searchType = null;
 let currentTrackID = null;
 let currentTrackPopularity = null;

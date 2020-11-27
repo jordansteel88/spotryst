@@ -1,11 +1,9 @@
-# from secrets import CLIENT_ID, CLIENT_SECRET
 from flask import session
 from models import db, connect_db, TrackResults, ArtistResults
 from urllib.parse import urlencode
 import base64
 import requests
 import datetime
-# import os
 # from user import user
 
 class SpotifyAPI(object):
@@ -348,5 +346,4 @@ class SpotifyAPI(object):
         return new_result
 
 
-# spotify = SpotifyAPI(client_id, client_secret)
-# spotify = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
+
