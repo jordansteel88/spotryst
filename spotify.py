@@ -1,4 +1,4 @@
-from secrets import CLIENT_ID, CLIENT_SECRET
+# from secrets import CLIENT_ID, CLIENT_SECRET
 from flask import session
 from models import db, connect_db, TrackResults, ArtistResults
 from urllib.parse import urlencode
