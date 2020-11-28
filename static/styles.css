@@ -82,11 +82,10 @@ option {
 
 @media only screen and (max-width: 600px) {
     #logo-title {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 
-    #instructions-display,
-    #logo-subtitle {
+    #instructions-display {
         font-size: 1rem; 
     }
 
@@ -97,6 +96,7 @@ option {
         margin: 60px 0 60px 0;
     }
 
+    #logo-subtitle,
     #nav-directions,
     #track-filter-form,
     #history-instructions {
