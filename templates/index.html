@@ -16,14 +16,16 @@
 <body>
 
 <div class="container text-center">
-    <h1 class="display-1 mb-0 title"><a href="/">Spotryst</a></h1>
-    <p class="display-5 mb-5 font-weight-bold subtitle">A SPOTIFY CONCIERGE</p>
+    <div class="container-fluid">
+      <h1 id="logo-title" class="display-1 mb-0 title"><a href="/">Spotryst</a></h1>
+      <p id="logo-subtitle" class="display-5 mb-5 font-weight-bold subtitle">A SPOTIFY CONCIERGE</p>
+    </div>
 
     <p id="info-display-alt" class="mb-4 hidden">Results Cleared</p>
 
     <div id="login">
-      <!-- <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private"> -->
-      <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=https://spotryst.herokuapp.com/spotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private">
+      <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private">
+      <!-- <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=https://spotryst.herokuapp.com/spotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private"> -->
         <button id="button-login" class="btn btn-success btn-lg p-4">
           Login to Spotify
         </button>
