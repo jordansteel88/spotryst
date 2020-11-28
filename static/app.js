@@ -92,7 +92,7 @@ function handleSearchResponse(res, search_type) {
 // ARTIST FUNCTIONS //////////////////////
 
 async function handleArtistChoiceUI(artistID, save) {
-    $('#instructions-display').html(`<p class="h5">Click any of the matches below to view related artists for that match, <br>
+    $('#instructions-display').html(`<p>Click any of the matches below to view their related artists, <br>
     click the "Listen" button to sample that artist's top track, <br>
     or click the "Follow" button to add to your favorite artists</p>`);
 

@@ -27,6 +27,7 @@ db.create_all()
 client_id = app.config['client_id']
 client_secret = app.config['client_secret']
 spotify = SpotifyAPI(client_id, client_secret)
+# spotify = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
 
 @app.route("/")
 def homepage():
@@ -56,12 +57,14 @@ def spotify_callback():
 def check_login():
     """Check logged in state and return a boolean"""
 
-    test_query = "a"
-    test_search_type = "artist"
+    # test_query = "a"
+    # test_search_type = "artist"
 
-    res = spotify.search(test_query, test_search_type)
+    # res = spotify.search(test_query, test_search_type)
 
-    if len(res['artists']):
+    # if len(res['artists']):
+
+    if spotify.access_token:
         return {"logged_in": "True"}
 
     return {"logged_in": "False"}

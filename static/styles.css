@@ -1,9 +1,10 @@
-html, 
-body {
-    height: 100%;
+#html {
+    font-size: 62.5%;
 }
 
 body {
+    height: 100vh;
+    font-size: 1.4rem;
     background: #000000;
     background: -webkit-linear-gradient(120deg, #434343, #000000);  
     background: linear-gradient(120deg, #434343, #000000);
@@ -63,4 +64,50 @@ option {
 .modal-backdrop
 {
     opacity:0.9 !important;
+}
+
+#artist-results,
+#track-results {
+    display: flex;
+    align-items: center;
+  } 
+
+
+@media only screen and (max-width: 900px) {
+    #results {
+        font-size: 1rem;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    #logo-title {
+        font-size: 4.5rem;
+    }
+
+    #instructions-display,
+    #logo-subtitle {
+        font-size: 1rem; 
+    }
+
+    #button-track,
+    #button-artist {
+        font-size: .9rem !important;
+        padding: 10px !important;
+        margin: 60px 0 60px 0;
+    }
+
+    #nav-directions,
+    #track-filter-form,
+    #history-instructions {
+        font-size: .9rem !important;
+    } 
+
+    #history-or {
+        margin-top: 50px !important;
+    }
+
+    .link {
+        font-size: .65rem;
+    }
 }

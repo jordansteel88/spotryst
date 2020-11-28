@@ -23,7 +23,7 @@ function generateTrackResLinkHTML(track) {
 
 function generateTrackResLinkPlaybackHTML (track) {
     let html = $(`<div class="col-2">
-                  <button type="button" class="mb-1 ml-1 btn btn-outline-success btn-block"
+                  <button type="button" class="link d-inline align-middle mb-1 ml-1 btn btn-outline-success btn-block"
                           data-toggle="modal" data-target="#playbackModal" data-trackid="${track.id}">
                     Listen
                   </button>
