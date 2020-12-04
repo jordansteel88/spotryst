@@ -107,9 +107,9 @@ async function handleArtistChoiceUI(artistID, save) {
 }
 
 async function displayRelatedArtists(artistID) {
-    UI.primeArtistResultsAndModalHTML();
-
     let res = await Artist.handleArtistChoice(BASE_URL, artistID);
+
+    UI.primeArtistResultsAndModalHTML();
 
     for (let i = 0; i < 10; i++) {
         if (res.data.artists[i]) {
