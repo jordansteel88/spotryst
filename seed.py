@@ -54,8 +54,8 @@ a3 = ArtistResults(id=1002,
 # db.session.add(a)
 # db.session.commit()
 
-db.session.add_all([t1, t2, t3, a1, a2, a3])
-db.session.commit()
+# db.session.add_all([t1, t2, t3, a1, a2, a3])
+# db.session.commit()
 
 # db.session.add_all([ures1, ures2])
 # db.session.commit()
