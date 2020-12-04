@@ -56,14 +56,7 @@ def spotify_callback():
 
 @app.route("/check_login")
 def check_login():
-    """Check logged in state and return a boolean"""
-
-    # test_query = "a"
-    # test_search_type = "artist"
-
-    # res = spotify.search(test_query, test_search_type)
-
-    # if len(res['artists']):
+    """Check logged in state and return logged_in object"""
 
     if spotify.access_token:
         return {"logged_in": "True"}
