@@ -9,9 +9,14 @@ let currentTrackPopularity = null;
 
 /// INITIAL UI LOAD //////////////////////
 
+// $(document).ready(function() {
+//     $('body').removeClass('hidden');
+// });
+
 checkLogin();
 
 async function checkLogin() {
+    $('body').removeClass('hidden');
     const res = await axios.get(`${BASE_URL}/check_login`);
     console.log(res.data);
     if (res.data.logged_in == "True") {
@@ -283,11 +288,6 @@ function clearTrackResults() {
 
 $('#delete-track-history').on('click', clearTrackResults);
 
-
-//////////////////////////////////////////////
-$(document).ready(function() {
-    $('body').removeClass('hidden');
-});
 
 
 
