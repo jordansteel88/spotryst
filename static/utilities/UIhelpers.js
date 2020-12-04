@@ -1,77 +1,64 @@
 function displayLogin() {
-  if ( !($('#instructions-display') ).hasClass('hidden')) {
-      $('#instructions-display').toggleClass('hidden');
-  }    
-  
-  if ( !($('#searchtype-buttons') ).hasClass('hidden')) {
-      $('#searchtype-buttons').toggleClass('hidden');
-  }    
+  $('#info-display-alt').hide();
+  $('#instructions-display').hide();
+  $('#info-display').hide();
+  $('#searchtype-buttons').hide();
+  $('#results').hide();
+  $('#playlists-buttons').hide();
+  $('#nav-directions').hide();
+  $('#search-form').hide();
+  $('#history-text').hide();
+  $('#button-artist-history').hide();
+  $('#button-track-history').hide();
+  $('#delete-artist-history').hide();
+  $('#delete-track-history').hide();
+  $('#track-filter-form').hide();
 }
 
 function init() {
-  $('#login').toggleClass('hidden');
-  $('#nav-directions').toggleClass('hidden');
   $('#instructions-display').html('Make a selection to begin exploring');
-  $('#searchtype-buttons').toggleClass('hidden');
-  $('#button-history').toggleClass('hidden');
-
-  if ($('#instructions-display').hasClass('hidden')) {
-      $('#instructions-display').toggleClass('hidden');
-  }
-
-  if ( !($('#login') ).hasClass('hidden')) {
-      $('#login').toggleClass('hidden');
-  }  
-  
-  if ( !($('#delete-artist-history') ).hasClass('hidden')) {
-      $('#delete-artist-history').toggleClass('hidden');
-  }    
-  
-  if ( !($('#delete-track-history') ).hasClass('hidden')) {
-      $('#delete-track-history').toggleClass('hidden');
-  }        
+ 
+  $('#login').hide();   
+  $('#info-display-alt').hide();  
+  $('#info-display').hide();  
+  $('#nav-directions').show();     
+  $('#instructions-display').show();     
+  $('#searchtype-buttons').show();     
+  $('#search-form').hide();
+  $('#track-filter-form').hide();  
+  $('#history-text').hide();
+  $('#button-artist-history').hide();
+  $('#button-track-history').hide();
+  $('#delete-artist-history').hide();
+  $('#delete-track-history').hide();  
 }
 
 function primeSearchHTML(searchType) {
-  if ($('#instructions-display').hasClass('hidden')) {
-      $('#instructions-display').toggleClass('hidden');}
-      
-  if ( !($('#info-display-alt') ).hasClass('hidden')) {
-      $('#info-display-alt').toggleClass('hidden');}   
-
-  if ($('#search-submit').hasClass('hidden')) {
-    $('#search-submit').toggleClass('hidden');
-  }
+  $('#info-display-alt').hide();  
+  $('#instructions-display').show();  
+  $('#nav-directions').hide();   
+  $('#search-form').show();
+  $('#searchtype-buttons').hide();
+  $('#history-instructions').show();
 
   if (searchType == "artist") {
     $('#instructions-display').html('Enter an artist below');
     $('#search-submit').html('Search Artists');
-    $('#history-or').toggleClass('hidden');
-    $('#button-artist-history').toggleClass('hidden');
+    $('#history-text').show();
+    $('#button-artist-history').show();
   }  
   
   if (searchType == "track") {
     $('#instructions-display').html('Enter a track below');
     $('#search-submit').html('Search Tracks');
-    $('#history-or').toggleClass('hidden');
-    $('#button-track-history').toggleClass('hidden');
+    $('#history-text').show();
+    $('#button-track-history').show();
   }
-
-  $('#searchtype-buttons').toggleClass('hidden');
-  $('#search-form').toggleClass('hidden');
-  $('#nav-directions').toggleClass('hidden');
-  $('#history-instructions').toggleClass('hidden');
 }
 
 function primeArtistResultsAndModalHTML() {
-    if ( !($('#info-display').hasClass('hidden')) ) {
-        $('#info-display').toggleClass('hidden');
-    }
-
-    if ( !($('#delete-artist-history') ).hasClass('hidden')) {
-      $('#delete-artist-history').toggleClass('hidden');
-    } 
-
+    $('#info-display').hide();
+    $('#delete-artist-history').hide();
     $('#artist-results').remove();
 
     $('#results').html(`
@@ -89,9 +76,7 @@ function primeArtistResultsAndModalHTML() {
 }
 
 function displayArtistFollowUI(res, artistName) {
-    if ($('#info-display').hasClass('hidden')) {
-      $('#info-display').toggleClass('hidden');
-    }
+    $('#info-display').show();
 
     if (res.data == "True") {
       $('#info-display').html(`Successfully followed ${artistName}!`);
@@ -101,7 +86,7 @@ function displayArtistFollowUI(res, artistName) {
 }
 
 function primeTrackResultsAndModalHTML() {
-    $('#track-filter-form').toggleClass('hidden');
+    $('#track-filter-form').hide();
     $('#instructions-display').html('Click any of the matches below to add the track to one of your playlists');
 
     $('#results').html(`
@@ -119,19 +104,14 @@ function primeTrackResultsAndModalHTML() {
 }
 
 function renderTrackFilterForm() {
-    if ( !($('#delete-track-history') ).hasClass('hidden')) {
-      $('#delete-track-history').toggleClass('hidden');
-    }   
-
-    $('#track-filter-form').toggleClass('hidden');
+    $('#delete-track-history').hide();
+    $('#track-filter-form').show();
     $('#instructions-display').html('Select some filters to refine your matches');
     $('#results').empty();
 }
 
 function renderPlaylistAddUI(trackName, playlistName, statusCode) {
-    if ($('#info-display').hasClass('hidden')) {
-      $('#info-display').toggleClass('hidden');
-    }
+    $('#info-display').show();
 
     if (statusCode == 200) {
         $('#info-display').html(`Successfully added "${trackName}" to ${playlistName}!`);
@@ -140,20 +120,16 @@ function renderPlaylistAddUI(trackName, playlistName, statusCode) {
         $('#instructions-display').html("Sorry, we couldn't add your track. Try logging back in."); 
     }
 
-    $('#playlists').toggleClass('hidden');
-    $('#results').toggleClass('hidden');
+    $('#playlists').hide();
+    $('#results').show();
 }
 
 function primePlaylistDisplay() {
-    $('#results').toggleClass('hidden');
-
-    if ( !($('#info-display').hasClass('hidden')) ) {
-        $('#info-display').toggleClass('hidden');
-    }
-    
-    $('#instructions-display').html('Choose a playlist to add your selected track');
-    $('#playlists').toggleClass('hidden');
+    $('#results').hide();
+    $('#info-display').hide();
+    $('#playlists').show();
     $('#playlists').empty();
+    $('#instructions-display').html('Choose a playlist to add your selected track');
 }
 
 function generateEmbedHTML(trackID) {
@@ -166,50 +142,34 @@ function generateEmbedHTML(trackID) {
 
 function primeSearchResponseHTML(search_type) {
   $('#results').empty();
-  $('#search-form').toggleClass('hidden');
-  $('#history-or').toggleClass('hidden');
-  $('#history-instructions').toggleClass('hidden');
-
-  if (search_type == "artist") {
-    $('#button-artist-history').toggleClass('hidden');
-  }  
-  
-  if (search_type == "track") {
-    $('#button-track-history').toggleClass('hidden');
-  } 
-
-  if ($('#results').hasClass('hidden')){
-      $('#results').toggleClass('hidden');
-  }
+  $('#search-form').hide();
+  $('#history-text').hide();
+  $('#button-track-history').hide();
+  $('#button-artist-history').hide();
+  $('#results').show();
 }  
 
 function primeHistoryHTML(searchType){
-  $('#search-form').toggleClass('hidden');
-  $('#search-submit').toggleClass('hidden');
+  $('#search-form').hide();
   $('#instructions-display').html('No search results yet! <br> Click on the Spotryst logo and perform some searches to populate your search result history');
-  $('#history-or').toggleClass('hidden');
-  $('#history-instructions').toggleClass('hidden');
+  $('#history-text').hide();
+  $('#results').show();
 
   if (searchType == "artist") {
-    $('#button-artist-history').toggleClass('hidden');
-    $('#delete-artist-history').toggleClass('hidden');
+    $('#button-artist-history').hide();
+    $('#delete-artist-history').show();
   }  
   
   if (searchType == "track") {
-    $('#button-track-history').toggleClass('hidden');
-    $('#delete-track-history').toggleClass('hidden');
+    $('#button-track-history').hide();
+    $('#delete-track-history').show();
   } 
-
-  if ($('#results').hasClass('hidden')) {
-    $('#results').toggleClass('hidden');
-  }
 }
 
 async function clearResults(BASE_URL, resultType) {
   const res = await axios.post(`${BASE_URL}/clear_results`, {resultType});
-  $('#info-display-alt').toggleClass('hidden');
+  $('#info-display-alt').show();
   $('#results').empty();
-
 }
 
 export { displayLogin, init, primeSearchHTML, primeArtistResultsAndModalHTML, displayArtistFollowUI, primeTrackResultsAndModalHTML, primePlaylistDisplay,

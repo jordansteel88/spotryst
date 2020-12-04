@@ -20,6 +20,7 @@ body {
 .title,
 .subtitle {
     letter-spacing: .2rem;
+    font-weight: 400;
 }
 
 a,
@@ -41,9 +42,14 @@ option {
     background-color: #DDDDDD;
 }
 
+button {
+    font-weight: 700 !important;
+}
+
 #info-display,
 #info-display-alt {
     background-color: rgb(0, 136, 0);
+    font-size: .9rem;
     color: #EEEEEE;
     border-radius: 3px;
     padding: 3px 0;
@@ -70,7 +76,11 @@ option {
 #track-results {
     display: flex;
     align-items: center;
-  } 
+} 
+
+.link {
+    height: 100%;
+}
 
 
 @media only screen and (max-width: 900px) {
@@ -81,6 +91,10 @@ option {
 
 
 @media only screen and (max-width: 600px) {
+    body {
+        font-weight: 700;
+    }
+
     #logo-title {
         font-size: 3.5rem;
     }
@@ -88,13 +102,14 @@ option {
     #instructions-display,
     #logo-subtitle {
         font-size: 1rem; 
+        font-weight: 700 !important;
     }
 
     #button-track,
     #button-artist {
         font-size: .9rem !important;
         padding: 10px !important;
-        margin: 60px 0 60px 0;
+        margin: 30px 0 30px 0;
     }
 
     #nav-directions,
@@ -107,7 +122,12 @@ option {
         margin-top: 50px !important;
     }
 
+    #history-or,
+    #history-instructions {
+        font-weight: 700 !important;
+    }
+
     .link {
-        font-size: .65rem;
+        font-size: .6rem;
     }
 }

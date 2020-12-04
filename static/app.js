@@ -9,12 +9,17 @@ let currentTrackPopularity = null;
 
 /// INITIAL UI LOAD //////////////////////
 
+$(document).ready(function() {
+    $('body').removeClass('hidden');
+});
+
 checkLogin();
 
 async function checkLogin() {
     const res = await axios.get(`${BASE_URL}/check_login`);
-
+    console.log(res.data);
     if (res.data.logged_in == "True") {
+        console.log('init');
         UI.init();
     } else {
         UI.displayLogin();
@@ -211,7 +216,7 @@ async function displayPlaylists(trackID, trackName) {
             $('#playlists').append(resLink);
         }
     } else {
-        $('#playlists').html(`<h2 class="display-5">Current user has no playlists</h2>`);
+        $('#playlists').html(`<h3 class="display-5">You haven't made any playlists yet! <br> Add a playlist using your Spotify app and it will appear here next time you want to save a track.</h3>`);
     }
 }
 

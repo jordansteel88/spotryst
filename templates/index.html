@@ -13,15 +13,15 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
-<body>
+<body class="hidden">
 
 <div class="container text-center">
     <div class="container-fluid">
       <h1 id="logo-title" class="display-1 mb-0 title"><a href="/">Spotryst</a></h1>
-      <p id="logo-subtitle" class="display-5 mb-5 font-weight-bold subtitle">A SPOTIFY CONCIERGE</p>
+      <p id="logo-subtitle" class="display-5 mb-5  subtitle">A SPOTIFY CONCIERGE</p>
     </div>
 
-    <p id="info-display-alt" class="mb-4 hidden">Results Cleared</p>
+    <p id="info-display-alt" class="mb-4">Results Cleared</p>
 
     <div id="login">
       <!-- <a href="https://accounts.spotify.com/authorize?client_id=340c082007f9486da29412bd452d0e72&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fspotify_callback&state=abc&show_dialog=true&scope=playlist-modify-public+playlist-modify-private+user-follow-modify+streaming+user-read-email+user-read-private"> -->
@@ -32,24 +32,24 @@
       </a>
     </div>
 
-    <h3 id="instructions-display" class="display-5 mb-4 hidden"></h3>
+    <h3 id="instructions-display" class="display-5 mb-4"></h3>
 
-    <p id="info-display" class="mb-4 hidden"></p>
+    <p id="info-display" class="mb-4"></p>
 
-    <div id="searchtype-buttons" class="hidden">
-      <button id="button-artist" class="btn btn-success btn-lg mr-2 p-4" type="button">Start with an artist</button>
-      <button id="button-track" class="btn btn-success btn-lg ml-2 p-4" type="button">Start with a track</button>
+    <div id="searchtype-buttons" class="">
+      <button id="button-artist" class="btn btn-success btn-lg mr-2 p-4 " type="button">Start with an artist</button>
+      <button id="button-track" class="btn btn-success btn-lg ml-2 p-4 " type="button">Start with a track</button>
     </div>
 
-    <div id="results" class="container hidden"></div>
+    <div id="results" class="container"></div>
 
-    <div id="playlists" class="hidden"></div>
+    <div id="playlists" class=""></div>
 
-    <div id="nav-directions" class="hidden mt-4">
+    <div id="nav-directions" class="mt-4">
       <p>Click on the Spotryst logo at any point to start over</p>
     </div>
 
-    <form id="search-form" class="hidden form-group" method="POST" action="/search">
+    <form id="search-form" class="form-group" method="POST" action="/search">
         {{ search_form.hidden_tag() }}
     
         {% for field in search_form if field.widget.input_type != 'hidden' %}
@@ -65,16 +65,19 @@
         <button id="search-submit" class="btn btn-success mt-2" type="submit"></button>
     </form>
 
-    <div id="history">
-      <h5 id="history-or" class="my-5 hidden">- Or -</h5>
-      <h3 id="history-instructions" class="mt-5 hidden">Make a selection from your previous search results</h3>
-      <button id="button-artist-history" class="btn btn-success mt-2 hidden" type="button">View Results History</button>
-      <button id="button-track-history" class="btn btn-success mt-2 hidden" type="button">View Results History</button>
-      <button id="delete-artist-history" class="btn btn-outline-danger mt-4 hidden" type="button">Clear Results</button>
-      <button id="delete-track-history" class="btn btn-outline-danger mt-4 hidden" type="button">Clear Results</button>
+    <div id="history-text">
+      <h5 id="history-or" class="my-5">- Or -</h5>
+      <h3 id="history-instructions" class="mt-5">Make a selection from your previous search results</h3>
     </div>
 
-    <form id="track-filter-form" class="hidden" method="POST" action="/filter-tracks">
+    <div id="history">
+      <button id="button-artist-history" class="btn btn-success mt-2" type="button">View Results History</button>
+      <button id="button-track-history" class="btn btn-success mt-2" type="button">View Results History</button>
+      <button id="delete-artist-history" class="btn btn-outline-danger mt-4" type="button">Clear Results</button>
+      <button id="delete-track-history" class="btn btn-outline-danger mt-4" type="button">Clear Results</button>
+    </div>
+
+    <form id="track-filter-form" class="" method="POST" action="/filter-tracks">
         {{ track_filter_form.hidden_tag() }}
     
         {% for field in track_filter_form if field.widget.input_type != 'hidden' %}
