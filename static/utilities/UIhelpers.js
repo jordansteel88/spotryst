@@ -13,6 +13,8 @@ function displayLogin() {
   $('#delete-artist-history').hide();
   $('#delete-track-history').hide();
   $('#track-filter-form').hide();
+  
+  $('body').removeClass('hidden');
 }
 
 function init() {
@@ -30,7 +32,9 @@ function init() {
   $('#button-artist-history').hide();
   $('#button-track-history').hide();
   $('#delete-artist-history').hide();
-  $('#delete-track-history').hide();  
+  $('#delete-track-history').hide(); 
+  
+  $('body').removeClass('hidden');
 }
 
 function primeSearchHTML(searchType) {
