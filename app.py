@@ -23,7 +23,6 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 
-# db.drop_all()
 db.create_all()
 
 client_id = app.config['client_id']

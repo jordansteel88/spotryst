@@ -9,10 +9,6 @@ let currentTrackPopularity = null;
 
 /// INITIAL UI LOAD //////////////////////
 
-$(document).ready(function() {
-    $('body').removeClass('hidden');
-});
-
 checkLogin();
 
 async function checkLogin() {
@@ -288,6 +284,10 @@ function clearTrackResults() {
 $('#delete-track-history').on('click', clearTrackResults);
 
 
+//////////////////////////////////////////////
+$(document).ready(function() {
+    $('body').removeClass('hidden');
+});
 
 
 
