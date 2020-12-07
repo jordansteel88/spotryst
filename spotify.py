@@ -8,14 +8,14 @@ import datetime
 
 class SpotifyAPI(object):
     """Class for Spotify client."""
-    access_token = None
-    access_token_expires = datetime.datetime.utcnow()
-    access_token_did_expire = True
-    refresh_token = None
+    # access_token = None
+    # access_token_expires = datetime.datetime.utcnow()
+    # access_token_did_expire = True
+    # refresh_token = None
     client_id = None
     client_secret = None
     token_url = 'https://accounts.spotify.com/api/token'
-    logged_in = False
+    # logged_in = False
 
 
     def __init__(self, client_id, client_secret, *args, **kwargs): 
@@ -50,8 +50,12 @@ class SpotifyAPI(object):
     
     def get_endpoint_headers(self):
         """Generate header for endpoint requests."""
+
+        # print('######### endpoint access_token ##################')
+        # print(session['access_token'])
+        # print('######### endpoint access_token ##################')
         
-        endpoint_headers = {"Authorization": f"Bearer {self.access_token}"}
+        endpoint_headers = {"Authorization": f"Bearer { session['access_token'] }"}
 
         return endpoint_headers
 
@@ -73,16 +77,26 @@ class SpotifyAPI(object):
         if res.status_code not in range(200, 204):
             raise Exception("Could not authorize user.")
 
-        self.access_token = res.json()['access_token']
-        self.refresh_token = res.json()['refresh_token']
-        expires_in = res.json()['expires_in']
-        expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)
-        self.access_token_expires = expires
-        self.access_token_did_expire = expires < datetime.datetime.utcnow()
-        self.logged_in = True
-        self.get_user_id()
+        # self.access_token = res.json()['access_token']
+        # self.refresh_token = res.json()['refresh_token']
+        # expires_in = res.json()['expires_in']
+        # expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)
+        # self.access_token_expires = expires
+        # self.access_token_did_expire = expires < datetime.datetime.utcnow()
+        # self.logged_in = True
+        # self.get_user_id()
+
+        # session['access_token'] = res.json()['access_token']
+
+
+        # print('######### user auth access_token ##################')
+        # print(session['access_token'])
+        # print('######### user auth access_token ##################')
+
+        # session['access_token'] = res.json()['access_token']
+
         
-        return True
+        return res.json()['access_token']
 
 
     def search(self, query, search_type, limit=10):
@@ -96,6 +110,10 @@ class SpotifyAPI(object):
         lookup_url = f"{endpoint}?{data}"
 
         res = requests.get(lookup_url, headers=headers)
+
+        # print('############# search res #################')
+        # print(res)
+        # print('############# search res #################')
 
         if res.status_code not in range(200, 204):
             return {}
@@ -234,6 +252,9 @@ class SpotifyAPI(object):
 
         res = requests.get(endpoint, headers=headers)
 
+        if not session.get('user_id'):
+            session['user_id'] = res.json()['id']
+
         return res.json()['id']
 
 
@@ -255,7 +276,7 @@ class SpotifyAPI(object):
 
         endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
+            "Authorization": f"Bearer { session['access_token'] }",
             "Content-Type": "application/json"
         }
 
@@ -277,7 +298,7 @@ class SpotifyAPI(object):
         endpoint = f"https://api.spotify.com/v1/me/following"
 
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
+            "Authorization": f"Bearer { session['access_token'] }",
             "Content-Type": "application/json"
         }
 
@@ -300,6 +321,10 @@ class SpotifyAPI(object):
         """Retrieve artist dictionary from db."""
 
         history_dict_list = []
+
+        # print('###### results history user_id ##########')
+        # print(session['user_id'])
+        # print('###### results history user_id ##########')
 
         if search_type == "artist":
             history = ArtistResults.query.filter(ArtistResults.user_id == session['user_id']).all()

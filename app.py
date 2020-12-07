@@ -22,7 +22,6 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
-
 db.create_all()
 
 client_id = app.config['client_id']
@@ -48,17 +47,27 @@ def spotify_callback():
 
     user_auth_token = request.args['code']    
 
-    spotify.perform_user_auth(user_auth_token)
-    session['user_id'] = spotify.get_user_id()
+    session['access_token'] = spotify.perform_user_auth(user_auth_token)
+
+    # print('######### original access_token ##################')
+    # print(session['access_token'])
+    # print('######### original access_token ##################')
 
     return redirect('/')
     
 
 @app.route("/check_login")
 def check_login():
-    """Check logged in state and return logged_in object"""
+    """Check logged in state and return a boolean"""
 
-    if spotify.access_token:
+    # test_query = "a"
+    # test_search_type = "artist"
+
+    # res = spotify.search(test_query, test_search_type)
+
+    # if len(res['artists']):
+
+    if session.get('access_token'):
         return {"logged_in": "True"}
 
     return {"logged_in": "False"}
@@ -67,6 +76,9 @@ def check_login():
 @app.route("/search", methods=["POST"])
 def search():
     """Search Spotify API for track or artist."""
+
+    if not session.get('user_id'):
+        session['user_id'] = spotify.get_user_id()
 
     form = SearchForm()
 

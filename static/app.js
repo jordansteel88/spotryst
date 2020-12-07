@@ -49,6 +49,8 @@ async function processSearchForm(evt) {
     const res = await axios.post(`${BASE_URL}/search`, 
                                  {query, search_type, csrf_token});
 
+    console.log(res);
+
     handleSearchResponse(res, search_type);
 }
 
@@ -107,9 +109,9 @@ async function handleArtistChoiceUI(artistID, save) {
 }
 
 async function displayRelatedArtists(artistID) {
-    let res = await Artist.handleArtistChoice(BASE_URL, artistID);
-
     UI.primeArtistResultsAndModalHTML();
+
+    let res = await Artist.handleArtistChoice(BASE_URL, artistID);
 
     for (let i = 0; i < 10; i++) {
         if (res.data.artists[i]) {
