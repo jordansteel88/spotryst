@@ -319,6 +319,9 @@ class SpotifyAPI(object):
     
     def get_results_history(self, search_type):
         """Retrieve artist dictionary from db."""
+        
+        if not session.get('user_id'):
+            session['user_id'] = spotify.get_user_id()
 
         history_dict_list = []
 
