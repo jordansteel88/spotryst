@@ -68,6 +68,7 @@ def check_login():
     # if len(res['artists']):
 
     if session.get('access_token'):
+        session['user_id'] = spotify.get_user_id()
         return {"logged_in": "True"}
 
     return {"logged_in": "False"}
@@ -77,8 +78,8 @@ def check_login():
 def search():
     """Search Spotify API for track or artist."""
 
-    if not session.get('user_id'):
-        session['user_id'] = spotify.get_user_id()
+    # if not session.get('user_id'):
+    #     session['user_id'] = spotify.get_user_id()
 
     form = SearchForm()
 
