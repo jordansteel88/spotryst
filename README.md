@@ -1,8 +1,8 @@
 # Spotryst
-Spotryst is a Spotify concierge powered by the Spotify API. It provides an intuitive user interface for searching and filtering related songs and artists, sampling your search results, and adding those results to your playlists and follows. You can try out Spotryst at <DEPLOYMENT_URL_HERE> 
+Spotryst is a Spotify concierge powered by the Spotify API. It provides an intuitive user interface for searching and filtering related songs and artists, sampling your search results, and adding those results to your playlists and follows. You can try out Spotryst at https://spotryst.herokuapp.com 
 
 ### Getting Started
-Upon navigating to <DEPLOYMENT_URL_HERE>, click the ***Login*** button and Spotify will prompt you for your credentials. Spotryst requires permission to modify your playlists and follows, as well as permission to read your user details so that it can provide playback functionality.
+Upon navigating to https://spotryst.herokuapp.com, click the ***Login*** button and Spotify will prompt you for your credentials. Spotryst requires permission to modify your playlists and follows, as well as permission to read your user details so that it can provide playback functionality.
 
 ### Design Choices
 I wanted to build an app utilizing the Spotify API because of its dev-friendly features, its robust data set, and Spotify's expansive developer community. I was particularly interested in utilizing the audio analysis objects to allow for a filtered track search, and the API provides a very convenient endpoint for seeding related track/artist searches with a number of filter parameters. Along with easily implementable embedding to allow for a more immersive interaction with native Spotify functionality, coding the user flow was mostly a breeze.
