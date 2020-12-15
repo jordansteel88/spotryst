@@ -16,8 +16,8 @@ Once you're logged in, you can choose to start with an artist search or a track 
 Choosing ***Start with an artist*** will prompt you to enter a search term, which will then give you a list of results to choose from. You also have the option here to ***View Results History***, which will start out empty but populate as you make selections from your search results. 
 
 Once a selection is made, Spotryst will show a list of 10 artists related to your selection. Here you have 3 options:
-1. Click the ***Listen*** button next to an artist to here full playback of that artist's top track
-2. Click the ***Follow*** button next to an artist to add that selection to your followed artists on Spotify
+1. Click the "play button" icon next to an artist to here full playback of that artist's top track
+2. Click the "add" icon button next to an artist to add that selection to your followed artists on Spotify
 3. Click the button containing the artist's name to get a new list of 10 artists related to _that_ artist
 
 At any point, clicking the Spotryst logo at the top of the screen will bring allow you start over and choose between the two search types.
@@ -31,7 +31,7 @@ Chosing ***Start with a track*** will begin with the same user flow as an artist
 5. Popularity - defined by number and recency of Spotify plays (eg. "Shape of You" by Ed Sheeran > "Mambo No. 5" by Lou Bega)
 
 Once a selection is made, Spotryst will show a list of 10 related tracks that fit your filter parameters. Here you have 2 options:
-1. Click the ***Listen*** button next to an artist to here full playback of that track
+1. Click the "play button" icon next to an artist to here full playback of that track
 2. Click the button containing the track's name to add that song to one of your playlists
 
 Option #2 will show a list of your playlists, and selecting one will add that song to that playlist. Once you're done with that set of matches, click the Spotryst logo to start over.
